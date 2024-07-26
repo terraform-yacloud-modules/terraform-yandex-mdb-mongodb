@@ -1,5 +1,6 @@
 variable "folder_id" {
-  default = ""
+  description = "Yandex Cloud folder ID"
+  type        = string
 }
 
 variable "subnet_id" {
