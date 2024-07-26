@@ -1,21 +1,10 @@
-resource "yandex_vpc_network" "mongodb_network" {
-  name = var.network_name
-  folder_id = var.folder_id
-}
-
-resource "yandex_vpc_subnet" "mongodb_subnet" {
-  name           = var.subnet_name
-  zone           = var.subnet_zone
-  folder_id      = var.folder_id
-  network_id     = yandex_vpc_network.mongodb_network.id
-  v4_cidr_blocks = var.subnet_cidr_blocks
-}
+data "yandex_client_config" "client" {}
 
 resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
   name        = var.cluster_name
   environment = var.environment
-  folder_id   = var.folder_id
-  network_id  = yandex_vpc_network.mongodb_network.id
+  folder_id   = var.folder_id == null ? data.yandex_client_config.client.folder_id : var.folder_id
+  network_id  = var.network_id
 
   cluster_config {
     version = var.mongodb_version
@@ -30,8 +19,8 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
   }
 
   host {
-    zone_id   = var.subnet_zone
-    subnet_id = yandex_vpc_subnet.mongodb_subnet.id
+    zone_id   = var.zone_id
+    subnet_id = var.subnet_id
   }
 
   # Убираем блок maintenance_window, если он не нужен
@@ -52,4 +41,7 @@ resource "yandex_mdb_mongodb_user" "mongodb_user" {
   permission {
     database_name = var.database_name
   }
+
+  # Добавляем зависимость от ресурса базы данных
+  depends_on = [yandex_mdb_mongodb_database.mongodb_database]
 }

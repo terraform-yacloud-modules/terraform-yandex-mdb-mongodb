@@ -2,24 +2,20 @@ variable "folder_id" {
   default = ""
 }
 
-variable "network_name" {
-  description = "Name of the VPC network"
+variable "subnet_id" {
+  description = "The ID of the subnet, to which the host belongs. The subnet must be a part of the network to which the cluster belongs"
   type        = string
 }
 
-variable "subnet_name" {
-  description = "Name of the VPC subnet"
+variable "network_id" {
+  description = "ID of the network, to which the Redis cluster belongs"
   type        = string
 }
 
-variable "subnet_zone" {
-  description = "Availability zone for the subnet"
+variable "zone_id" {
+  description = "Zone for allocating address"
   type        = string
-}
-
-variable "subnet_cidr_blocks" {
-  description = "CIDR blocks for the subnet"
-  type        = list(string)
+  default     = "ru-central1-a"
 }
 
 variable "cluster_name" {
