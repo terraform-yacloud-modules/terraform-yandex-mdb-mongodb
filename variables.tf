@@ -77,11 +77,12 @@ variable "resources_mongod_disk_type" {
   type        = string
 }
 
-variable "maintenance_window_type" {
-  description = "Type of maintenance window"
-  type        = string
-  validation {
-    condition     = contains(["ANYTIME", "WEEKLY"], var.maintenance_window_type)
-    error_message = "The maintenance window type must be either ANYTIME or WEEKLY."
-  }
-}
+# Убираем переменную maintenance_window_type, если она не нужна
+# variable "maintenance_window_type" {
+#   description = "Type of maintenance window"
+#   type        = string
+#   validation {
+#     condition     = contains(["ANYTIME", "WEEKLY"], var.maintenance_window_type)
+#     error_message = "The maintenance window type must be either ANYTIME or WEEKLY."
+#   }
+# }

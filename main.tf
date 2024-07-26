@@ -23,18 +23,6 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
 
   labels = var.labels
 
-  database {
-    name = var.database_name
-  }
-
-  user {
-    name     = var.user_name
-    password = var.user_password
-    permission {
-      database_name = var.database_name
-    }
-  }
-
   resources_mongod {
     resource_preset_id = var.resources_mongod_preset
     disk_size          = var.resources_mongod_disk_size
@@ -46,8 +34,22 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
     subnet_id = yandex_vpc_subnet.mongodb_subnet.id
   }
 
-  maintenance_window {
-    type = var.maintenance_window_type
-  }
+  # Убираем блок maintenance_window, если он не нужен
+  # maintenance_window {
+  #   type = var.maintenance_window_type
+  # }
 }
 
+resource "yandex_mdb_mongodb_database" "mongodb_database" {
+  cluster_id = yandex_mdb_mongodb_cluster.mongodb_cluster.id
+  name       = var.database_name
+}
+
+resource "yandex_mdb_mongodb_user" "mongodb_user" {
+  cluster_id = yandex_mdb_mongodb_cluster.mongodb_cluster.id
+  name       = var.user_name
+  password   = var.user_password
+  permission {
+    database_name = var.database_name
+  }
+}
