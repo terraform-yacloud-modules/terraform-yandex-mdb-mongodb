@@ -1,8 +1,3 @@
-variable "folder_id" {
-  description = "Yandex Cloud folder ID"
-  type        = string
-}
-
 variable "subnet_id" {
   description = "The ID of the subnet, to which the host belongs. The subnet must be a part of the network to which the cluster belongs"
   type        = string
