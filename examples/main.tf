@@ -1,7 +1,6 @@
 module "mongodb_cluster" {
   source = "../"
 
-  folder_id    = "xxxx"
   network_id   = "xxxx"
   subnet_id    = "xxxx"
 
