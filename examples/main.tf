@@ -1,8 +1,28 @@
+data "yandex_client_config" "client" {}
+
+module "network" {
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-vpc.git?ref=v1.0.0"
+
+  folder_id = data.yandex_client_config.client.folder_id
+
+  blank_name = "vpc-nat-gateway"
+  labels = {
+    repo = "terraform-yacloud-modules/terraform-yandex-vpc"
+  }
+
+  azs = ["ru-central1-a"]
+
+  private_subnets = [["10.4.0.0/24"]]
+
+  create_vpc         = true
+  create_nat_gateway = true
+}
+
 module "mongodb_cluster" {
   source = "../"
 
-  network_id = "xxxx"
-  subnet_id  = "xxxx"
+  network_id = module.network.vpc_id
+  subnet_id  = module.network.private_subnets_ids[0]
 
   cluster_name               = "test-cluster"
   environment                = "PRESTABLE"
@@ -15,4 +35,6 @@ module "mongodb_cluster" {
   resources_mongod_disk_size = 16
   resources_mongod_disk_type = "network-hdd"
   #   maintenance_window_type = "ANYTIME"
+
+  depends_on = [module.network]
 }
