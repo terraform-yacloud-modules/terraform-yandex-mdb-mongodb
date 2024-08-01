@@ -23,10 +23,11 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
     subnet_id = var.subnet_id
   }
 
-  # Убираем блок maintenance_window, если он не нужен
-  # maintenance_window {
-  #   type = var.maintenance_window_type
-  # }
+  maintenance_window {
+    type = var.maintenance_window_type
+    day  = var.maintenance_window_day
+    hour = var.maintenance_window_hour
+  }
 }
 
 resource "yandex_mdb_mongodb_database" "mongodb_database" {

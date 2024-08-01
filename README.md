@@ -45,6 +45,9 @@ No modules.
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment of the MongoDB cluster | `string` | n/a | yes |
 | <a name="input_labels"></a> [labels](#input\_labels) | A set of key/value label pairs to assign to the MongoDB cluster | `map(string)` | `{}` | no |
+| <a name="input_maintenance_window_day"></a> [maintenance\_window\_day](#input\_maintenance\_window\_day) | Day of week for maintenance window if window type is weekly. Possible values: MON, TUE, WED, THU, FRI, SAT, SUN. | `string` | `"MON"` | no |
+| <a name="input_maintenance_window_hour"></a> [maintenance\_window\_hour](#input\_maintenance\_window\_hour) | Hour of day in UTC time zone (1-24) for maintenance window if window type is weekly. | `number` | `3` | no |
+| <a name="input_maintenance_window_type"></a> [maintenance\_window\_type](#input\_maintenance\_window\_type) | Type of maintenance window. Can be either ANYTIME or WEEKLY. | `string` | `"WEEKLY"` | no |
 | <a name="input_mongodb_version"></a> [mongodb\_version](#input\_mongodb\_version) | Version of the MongoDB server software | `string` | n/a | yes |
 | <a name="input_network_id"></a> [network\_id](#input\_network\_id) | ID of the network, to which the Redis cluster belongs | `string` | n/a | yes |
 | <a name="input_resources_mongod_disk_size"></a> [resources\_mongod\_disk\_size](#input\_resources\_mongod\_disk\_size) | Volume of the storage available to a MongoDB host, in gigabytes | `number` | n/a | yes |

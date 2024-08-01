@@ -34,7 +34,9 @@ module "mongodb_cluster" {
   resources_mongod_preset    = "s2.small"
   resources_mongod_disk_size = 16
   resources_mongod_disk_type = "network-hdd"
-  #   maintenance_window_type = "ANYTIME"
+  maintenance_window_type    = "WEEKLY"
+  maintenance_window_day     = "MON"
+  maintenance_window_hour    = 3
 
   depends_on = [module.network]
 }
