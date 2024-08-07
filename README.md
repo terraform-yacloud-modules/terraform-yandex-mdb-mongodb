@@ -61,3 +61,8 @@ string<br>  }))</pre> | n/a | yes |
 
 No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## License
+
+Apache-2.0 Licensed.
+See [LICENSE](https://github.com/terraform-yacloud-modules/terraform-yandex-module-template/blob/main/LICENSE).
