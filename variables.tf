@@ -70,7 +70,7 @@ variable "resources_mongod_disk_type" {
 }
 
 variable "mongod_hosts" {
-  description = "List of hosts in MongoDB cluster"
+  description = "List of hosts in MongoDB cluster."
   type = list(object({
     zone_id   = optional(string, "ru-central1-a")
     subnet_id = string
