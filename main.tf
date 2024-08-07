@@ -18,9 +18,12 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
     disk_type_id       = var.resources_mongod_disk_type
   }
 
-  host {
-    zone_id   = var.zone_id
-    subnet_id = var.subnet_id
+  dynamic "host" {
+    for_each = var.mongod_hosts
+    content {
+      zone_id   = try(host.value.zone_id, var.zone_id)
+      subnet_id = try(host.value.subnet_id, var.subnet_id)
+    }
   }
 
   # Убираем блок maintenance_window, если он не нужен
