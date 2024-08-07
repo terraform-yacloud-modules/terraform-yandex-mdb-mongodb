@@ -45,6 +45,8 @@ No modules.
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment of the MongoDB cluster | `string` | n/a | yes |
 | <a name="input_labels"></a> [labels](#input\_labels) | A set of key/value label pairs to assign to the MongoDB cluster | `map(string)` | `{}` | no |
+| <a name="input_mongod_hosts"></a> [mongod\_hosts](#input\_mongod\_hosts) | List of hosts in MongoDB cluster | <pre>list(object({<br>    zone_id   = optional(string, "ru-central1-a")<br>    subnet_id = 
+string<br>  }))</pre> | n/a | yes |
 | <a name="input_mongodb_version"></a> [mongodb\_version](#input\_mongodb\_version) | Version of the MongoDB server software | `string` | n/a | yes |
 | <a name="input_network_id"></a> [network\_id](#input\_network\_id) | ID of the network, to which the Redis cluster belongs | `string` | n/a | yes |
 | <a name="input_resources_mongod_disk_size"></a> [resources\_mongod\_disk\_size](#input\_resources\_mongod\_disk\_size) | Volume of the storage available to a MongoDB host, in gigabytes | `number` | n/a | yes |

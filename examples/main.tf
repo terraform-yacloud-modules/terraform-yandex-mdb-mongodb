@@ -34,6 +34,7 @@ module "mongodb_cluster" {
   resources_mongod_preset    = "s2.small"
   resources_mongod_disk_size = 16
   resources_mongod_disk_type = "network-hdd"
+  mongod_hosts               = [{ subnet_id = module.network.private_subnets_ids[0] }, { subnet_id = module.network.private_subnets_ids[0] }]
   #   maintenance_window_type = "ANYTIME"
 
   depends_on = [module.network]

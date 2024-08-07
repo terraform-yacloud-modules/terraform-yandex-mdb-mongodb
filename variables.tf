@@ -69,6 +69,14 @@ variable "resources_mongod_disk_type" {
   type        = string
 }
 
+variable "mongod_hosts" {
+  description = "List of hosts in MongoDB cluster"
+  type = list(object({
+    zone_id   = optional(string, "ru-central1-a")
+    subnet_id = string
+  }))
+}
+
 # Убираем переменную maintenance_window_type, если она не нужна
 # variable "maintenance_window_type" {
 #   description = "Type of maintenance window"
