@@ -7,7 +7,31 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
   network_id  = var.network_id
 
   cluster_config {
-    version = var.mongodb_version
+    version                       = var.mongodb_version
+    feature_compatibility_version = var.feature_compatibility_version
+
+    dynamic "backup_window_start" {
+      for_each = var.backup_window_start != null ? [var.backup_window_start] : []
+      content {
+        hours   = backup_window_start.value.hours
+        minutes = backup_window_start.value.minutes
+      }
+    }
+
+    dynamic "performance_diagnostics" {
+      for_each = var.performance_diagnostics != null ? [var.performance_diagnostics] : []
+      content {
+        enabled = performance_diagnostics.value.enabled
+      }
+    }
+
+    dynamic "access" {
+      for_each = var.access != null ? [var.access] : []
+      content {
+        data_lens     = access.value.data_lens
+        data_transfer = access.value.data_transfer
+      }
+    }
   }
 
   labels = var.labels
@@ -30,6 +54,9 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
   # maintenance_window {
   #   type = var.maintenance_window_type
   # }
+
+  security_group_ids  = var.security_group_ids
+  deletion_protection = var.deletion_protection
 }
 
 resource "yandex_mdb_mongodb_database" "mongodb_database" {

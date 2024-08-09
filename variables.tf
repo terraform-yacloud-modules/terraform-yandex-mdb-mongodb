@@ -33,6 +33,12 @@ variable "mongodb_version" {
   type        = string
 }
 
+variable "feature_compatibility_version" {
+  description = "Feature compatibility version of MongoDB"
+  type        = string
+  default     = null
+}
+
 variable "labels" {
   description = "A set of key/value label pairs to assign to the MongoDB cluster"
   type        = map(string)
@@ -86,3 +92,41 @@ variable "mongod_hosts" {
 #     error_message = "The maintenance window type must be either ANYTIME or WEEKLY."
 #   }
 # }
+
+variable "security_group_ids" {
+  description = "A set of ids of security groups assigned to hosts of the cluster"
+  type        = list(string)
+  default     = []
+}
+
+variable "deletion_protection" {
+  description = "Inhibits deletion of the cluster"
+  type        = bool
+  default     = false
+}
+
+variable "backup_window_start" {
+  description = "Time to start the daily backup, in the UTC timezone"
+  type = object({
+    hours   = optional(number)
+    minutes = optional(number)
+  })
+  default = null
+}
+
+variable "performance_diagnostics" {
+  description = "Performance diagnostics to the MongoDB cluster"
+  type = object({
+    enabled = optional(bool)
+  })
+  default = null
+}
+
+variable "access" {
+  description = "Access policy to the MongoDB cluster"
+  type = object({
+    data_lens     = optional(bool)
+    data_transfer = optional(bool)
+  })
+  default = null
+}
