@@ -49,7 +49,7 @@ No modules.
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment of the MongoDB cluster | `string` | n/a | yes |
 | <a name="input_feature_compatibility_version"></a> [feature\_compatibility\_version](#input\_feature\_compatibility\_version) | Feature compatibility version of MongoDB | `string` | `null` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | A set of key/value label pairs to assign to the MongoDB cluster | `map(string)` | `{}` | no |
-| <a name="input_mongod_hosts"></a> [mongod\_hosts](#input\_mongod\_hosts) | List of hosts in MongoDB cluster. | <pre>list(object({<br>    zone_id   = optional(string, "ru-central1-a")<br>    subnet_id = string<br>  }))</pre> | n/a | yes |
+| <a name="input_mongod_hosts"></a> [mongod\_hosts](#input\_mongod\_hosts) | List of hosts in MongoDB cluster. | <pre>list(object({<br>    assign_public_ip = optional(bool, false)<br>    zone_id   = optional(string, "ru-central1-a")<br>    subnet_id = string<br>  }))</pre> | n/a | yes |
 | <a name="input_mongodb_version"></a> [mongodb\_version](#input\_mongodb\_version) | Version of the MongoDB server software | `string` | n/a | yes |
 | <a name="input_network_id"></a> [network\_id](#input\_network\_id) | ID of the network, to which the Redis cluster belongs | `string` | n/a | yes |
 | <a name="input_performance_diagnostics"></a> [performance\_diagnostics](#input\_performance\_diagnostics) | Performance diagnostics to the MongoDB cluster | <pre>object({<br>    enabled = optional(bool)<br>  })</pre> | `null` | no |
