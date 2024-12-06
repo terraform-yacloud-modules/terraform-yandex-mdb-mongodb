@@ -45,8 +45,9 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
   dynamic "host" {
     for_each = var.mongod_hosts
     content {
-      zone_id   = try(host.value.zone_id, var.zone_id)
-      subnet_id = try(host.value.subnet_id, var.subnet_id)
+      assign_public_ip = try(host.value.assign_public_ip, false)
+      zone_id          = try(host.value.zone_id, var.zone_id)
+      subnet_id        = try(host.value.subnet_id, var.subnet_id)
     }
   }
 
@@ -70,6 +71,7 @@ resource "yandex_mdb_mongodb_user" "mongodb_user" {
   password   = var.user_password
   permission {
     database_name = var.database_name
+    roles         = var.user_roles
   }
 
   # Добавляем зависимость от ресурса базы данных

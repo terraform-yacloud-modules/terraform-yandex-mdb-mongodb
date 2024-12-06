@@ -60,6 +60,12 @@ variable "user_password" {
   type        = string
 }
 
+variable "user_roles" {
+  description = "Roles of the user"
+  type        = list
+  default     = ["readWrite"]
+}
+
 variable "resources_mongod_preset" {
   description = "The ID of the preset for computational resources available to a MongoDB host"
   type        = string
@@ -78,6 +84,7 @@ variable "resources_mongod_disk_type" {
 variable "mongod_hosts" {
   description = "List of hosts in MongoDB cluster."
   type = list(object({
+    assign_public_ip = optional(bool, false)
     zone_id   = optional(string, "ru-central1-a")
     subnet_id = string
   }))
