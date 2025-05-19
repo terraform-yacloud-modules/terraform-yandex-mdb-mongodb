@@ -26,7 +26,7 @@ module "mongodb_cluster" {
 
   cluster_name               = "test-cluster"
   environment                = "PRESTABLE"
-  mongodb_version            = "5.0"
+  mongodb_version            = "6.0"
   labels                     = { test_key = "test_value" }
   database_name              = "testdb"
   user_name                  = "john"
@@ -35,7 +35,7 @@ module "mongodb_cluster" {
   resources_mongod_disk_size = 16
   resources_mongod_disk_type = "network-hdd"
 
-  feature_compatibility_version = "5.0"
+  feature_compatibility_version = "6.0"
 
   mongod_hosts = [
     {
