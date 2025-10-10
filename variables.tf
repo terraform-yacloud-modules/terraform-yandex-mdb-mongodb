@@ -66,7 +66,7 @@ variable "user_password" {
 
 variable "user_roles" {
   description = "Roles of the user"
-  type        = list
+  type        = list(any)
   default     = ["readWrite"]
 }
 
@@ -89,8 +89,8 @@ variable "mongod_hosts" {
   description = "List of hosts in MongoDB cluster."
   type = list(object({
     assign_public_ip = optional(bool, false)
-    zone_id   = optional(string, "ru-central1-a")
-    subnet_id = string
+    zone_id          = optional(string, "ru-central1-a")
+    subnet_id        = string
   }))
 }
 
