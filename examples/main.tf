@@ -26,7 +26,7 @@ module "mongodb_cluster" {
 
   cluster_name               = "test-cluster"
   environment                = "PRESTABLE"
-  mongodb_version            = "6.0"
+  mongodb_version            = "7.0"
   labels                     = { test_key = "test_value" }
   database_name              = "testdb"
   user_name                  = "john"

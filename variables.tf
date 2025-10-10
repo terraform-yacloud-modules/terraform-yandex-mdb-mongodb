@@ -32,8 +32,8 @@ variable "mongodb_version" {
   description = "Version of the MongoDB server"
   type        = string
   validation {
-    condition     = contains(["6.0", "7.0", "8.0"], var.mongodb_version)
-    error_message = "The MongoDB server version must be 6.0, 7.0, 8.0"
+    condition     = contains(["7.0", "8.0"], var.mongodb_version)
+    error_message = "The MongoDB server version must be 7.0, 8.0"
   }
 }
 
