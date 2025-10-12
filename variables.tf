@@ -94,15 +94,22 @@ variable "mongod_hosts" {
   }))
 }
 
-# Убираем переменную maintenance_window_type, если она не нужна
-# variable "maintenance_window_type" {
-#   description = "Type of maintenance window"
-#   type        = string
-#   validation {
-#     condition     = contains(["ANYTIME", "WEEKLY"], var.maintenance_window_type)
-#     error_message = "The maintenance window type must be either ANYTIME or WEEKLY."
-#   }
-# }
+variable "maintenance_window" {
+  description = "Maintenance window settings for the MongoDB cluster"
+  type = object({
+    type = optional(string)
+    day  = optional(string)
+    hour = optional(number)
+  })
+  default = null
+  validation {
+    condition = var.maintenance_window == null || (
+      var.maintenance_window.type == "ANYTIME" ||
+      (var.maintenance_window.type == "WEEKLY" && var.maintenance_window.day != null && var.maintenance_window.hour != null)
+    )
+    error_message = "For WEEKLY maintenance window, both day and hour must be specified. For ANYTIME, only type should be specified."
+  }
+}
 
 variable "security_group_ids" {
   description = "A set of ids of security groups assigned to hosts of the cluster"
@@ -138,6 +145,13 @@ variable "access" {
   type = object({
     data_lens     = optional(bool)
     data_transfer = optional(bool)
+    web_sql       = optional(bool)
   })
   default = null
+}
+
+variable "backup_retain_period_days" {
+  description = "Retention period for automatic backups in days"
+  type        = number
+  default     = null
 }
