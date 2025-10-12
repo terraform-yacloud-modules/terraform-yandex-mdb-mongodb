@@ -59,7 +59,12 @@ module "mongodb_cluster" {
     data_lens     = true
     data_transfer = true
   }
-  #   maintenance_window_type = "ANYTIME"
+
+  maintenance_window = {
+    type = "WEEKLY"
+    day  = "MON"
+    hour = 2
+  }
 
   depends_on = [module.network]
 }

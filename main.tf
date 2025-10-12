@@ -30,8 +30,11 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
       content {
         data_lens     = access.value.data_lens
         data_transfer = access.value.data_transfer
+        web_sql       = access.value.web_sql
       }
     }
+
+    backup_retain_period_days = var.backup_retain_period_days
   }
 
   labels = var.labels
@@ -51,10 +54,14 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
     }
   }
 
-  # Убираем блок maintenance_window, если он не нужен
-  # maintenance_window {
-  #   type = var.maintenance_window_type
-  # }
+  dynamic "maintenance_window" {
+    for_each = var.maintenance_window != null ? [var.maintenance_window] : []
+    content {
+      type = maintenance_window.value.type
+      day  = try(maintenance_window.value.day, null)
+      hour = try(maintenance_window.value.hour, null)
+    }
+  }
 
   security_group_ids  = var.security_group_ids
   deletion_protection = var.deletion_protection
