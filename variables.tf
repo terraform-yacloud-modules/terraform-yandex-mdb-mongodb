@@ -19,6 +19,12 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "description" {
+  description = "Description of the MongoDB cluster"
+  type        = string
+  default     = null
+}
+
 variable "environment" {
   description = "Deployment environment of the MongoDB cluster"
   type        = string
@@ -85,12 +91,33 @@ variable "resources_mongod_disk_type" {
   type        = string
 }
 
+variable "resources_mongos" {
+  description = "Resources for mongos hosts"
+  type = object({
+    resource_preset_id = string
+    disk_size          = number
+    disk_type_id       = string
+  })
+  default = null
+}
+
+variable "resources_mongocfg" {
+  description = "Resources for mongocfg hosts"
+  type = object({
+    resource_preset_id = string
+    disk_size          = number
+    disk_type_id       = string
+  })
+  default = null
+}
+
 variable "mongod_hosts" {
   description = "List of hosts in MongoDB cluster."
   type = list(object({
     assign_public_ip = optional(bool, false)
     zone_id          = optional(string, "ru-central1-a")
     subnet_id        = string
+    type             = optional(string, "MONGOD")
   }))
 }
 
@@ -149,6 +176,8 @@ variable "access" {
   })
   default = null
 }
+
+
 
 variable "backup_retain_period_days" {
   description = "Retention period for automatic backups in days"
