@@ -19,7 +19,7 @@ module "network" {
 }
 
 module "mongodb_cluster" {
-  source = "../"
+  source = "../../"
 
   network_id = module.network.vpc_id
   subnet_id  = module.network.private_subnets_ids[0]
