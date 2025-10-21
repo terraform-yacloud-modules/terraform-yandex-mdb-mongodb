@@ -2,6 +2,7 @@ data "yandex_client_config" "client" {}
 
 resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
   name        = var.cluster_name
+  description = var.description
   environment = var.environment
   folder_id   = data.yandex_client_config.client.folder_id
   network_id  = var.network_id
@@ -45,12 +46,31 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
     disk_type_id       = var.resources_mongod_disk_type
   }
 
+  dynamic "resources_mongos" {
+    for_each = var.resources_mongos != null ? [var.resources_mongos] : []
+    content {
+      resource_preset_id = resources_mongos.value.resource_preset_id
+      disk_size          = resources_mongos.value.disk_size
+      disk_type_id       = resources_mongos.value.disk_type_id
+    }
+  }
+
+  dynamic "resources_mongocfg" {
+    for_each = var.resources_mongocfg != null ? [var.resources_mongocfg] : []
+    content {
+      resource_preset_id = resources_mongocfg.value.resource_preset_id
+      disk_size          = resources_mongocfg.value.disk_size
+      disk_type_id       = resources_mongocfg.value.disk_type_id
+    }
+  }
+
   dynamic "host" {
     for_each = var.mongod_hosts
     content {
       assign_public_ip = try(host.value.assign_public_ip, false)
       zone_id          = try(host.value.zone_id, var.zone_id)
       subnet_id        = try(host.value.subnet_id, var.subnet_id)
+      type             = try(host.value.type, "MONGOD")
     }
   }
 
