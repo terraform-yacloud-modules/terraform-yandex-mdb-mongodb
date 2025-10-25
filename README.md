@@ -41,21 +41,26 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access"></a> [access](#input\_access) | Access policy to the MongoDB cluster | <pre>object({<br/>    data_lens     = optional(bool)<br/>    data_transfer = optional(bool)<br/>  })</pre> | `null` | no |
+| <a name="input_access"></a> [access](#input\_access) | Access policy to the MongoDB cluster | <pre>object({<br/>    data_lens     = optional(bool)<br/>    data_transfer = optional(bool)<br/>    web_sql       = optional(bool)<br/>  })</pre> | `null` | no |
+| <a name="input_backup_retain_period_days"></a> [backup\_retain\_period\_days](#input\_backup\_retain\_period\_days) | Retention period for automatic backups in days | `number` | `null` | no |
 | <a name="input_backup_window_start"></a> [backup\_window\_start](#input\_backup\_window\_start) | Time to start the daily backup, in the UTC timezone | <pre>object({<br/>    hours   = optional(number)<br/>    minutes = optional(number)<br/>  })</pre> | `null` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the MongoDB cluster | `string` | n/a | yes |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database | `string` | n/a | yes |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Inhibits deletion of the cluster | `bool` | `false` | no |
+| <a name="input_description"></a> [description](#input\_description) | Description of the MongoDB cluster | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment of the MongoDB cluster | `string` | n/a | yes |
 | <a name="input_feature_compatibility_version"></a> [feature\_compatibility\_version](#input\_feature\_compatibility\_version) | Feature compatibility version of MongoDB | `string` | `null` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | A set of key/value label pairs to assign to the MongoDB cluster | `map(string)` | `{}` | no |
-| <a name="input_mongod_hosts"></a> [mongod\_hosts](#input\_mongod\_hosts) | List of hosts in MongoDB cluster. | <pre>list(object({<br/>    assign_public_ip = optional(bool, false)<br/>    zone_id          = optional(string, "ru-central1-a")<br/>    subnet_id        = string<br/>  }))</pre> | n/a | yes |
+| <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | Maintenance window settings for the MongoDB cluster | <pre>object({<br/>    type = optional(string)<br/>    day  = optional(string)<br/>    hour = optional(number)<br/>  })</pre> | `null` | no |
+| <a name="input_mongod_hosts"></a> [mongod\_hosts](#input\_mongod\_hosts) | List of hosts in MongoDB cluster. | <pre>list(object({<br/>    assign_public_ip = optional(bool, false)<br/>    zone_id          = optional(string, "ru-central1-a")<br/>    subnet_id        = string<br/>    type             = optional(string, "MONGOD")<br/>  }))</pre> | n/a | yes |
 | <a name="input_mongodb_version"></a> [mongodb\_version](#input\_mongodb\_version) | Version of the MongoDB server | `string` | n/a | yes |
 | <a name="input_network_id"></a> [network\_id](#input\_network\_id) | ID of the network, to which the Redis cluster belongs | `string` | n/a | yes |
 | <a name="input_performance_diagnostics"></a> [performance\_diagnostics](#input\_performance\_diagnostics) | Performance diagnostics to the MongoDB cluster | <pre>object({<br/>    enabled = optional(bool)<br/>  })</pre> | `null` | no |
+| <a name="input_resources_mongocfg"></a> [resources\_mongocfg](#input\_resources\_mongocfg) | Resources for mongocfg hosts | <pre>object({<br/>    resource_preset_id = string<br/>    disk_size          = number<br/>    disk_type_id       = string<br/>  })</pre> | `null` | no |
 | <a name="input_resources_mongod_disk_size"></a> [resources\_mongod\_disk\_size](#input\_resources\_mongod\_disk\_size) | Volume of the storage available to a MongoDB host, in gigabytes | `number` | n/a | yes |
 | <a name="input_resources_mongod_disk_type"></a> [resources\_mongod\_disk\_type](#input\_resources\_mongod\_disk\_type) | Type of the storage of MongoDB hosts | `string` | n/a | yes |
 | <a name="input_resources_mongod_preset"></a> [resources\_mongod\_preset](#input\_resources\_mongod\_preset) | The ID of the preset for computational resources available to a MongoDB host | `string` | n/a | yes |
+| <a name="input_resources_mongos"></a> [resources\_mongos](#input\_resources\_mongos) | Resources for mongos hosts | <pre>object({<br/>    resource_preset_id = string<br/>    disk_size          = number<br/>    disk_type_id       = string<br/>  })</pre> | `null` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | A set of ids of security groups assigned to hosts of the cluster | `list(string)` | `[]` | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The ID of the subnet, to which the host belongs. The subnet must be a part of the network to which the cluster belongs | `string` | n/a | yes |
 | <a name="input_user_name"></a> [user\_name](#input\_user\_name) | Name of the user | `string` | n/a | yes |
