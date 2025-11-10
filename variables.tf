@@ -29,8 +29,8 @@ variable "environment" {
   description = "Deployment environment of the MongoDB cluster"
   type        = string
   validation {
-    condition     = contains(["PRESTABLE", "PRODUCTION"], var.environment)
-    error_message = "The environment must be either PRESTABLE or PRODUCTION."
+    condition     = contains(["PRODUCTION", "PRESTABLE"], var.environment)
+    error_message = "The environment must be either PRODUCTION or PRESTABLE."
   }
 }
 
@@ -39,7 +39,7 @@ variable "mongodb_version" {
   type        = string
   validation {
     condition     = contains(["7.0", "8.0"], var.mongodb_version)
-    error_message = "The MongoDB server version must be 7.0, 8.0"
+    error_message = "The MongoDB server version must be 7.0 or 8.0."
   }
 }
 
@@ -79,6 +79,10 @@ variable "user_roles" {
 variable "resources_mongod_preset" {
   description = "The ID of the preset for computational resources available to a MongoDB host"
   type        = string
+  validation {
+    condition     = contains(["s2.micro", "s2.small", "s2.medium"], var.resources_mongod_preset) # Add more as per docs
+    error_message = "Invalid resource preset ID."
+  }
 }
 
 variable "resources_mongod_disk_size" {
@@ -89,6 +93,10 @@ variable "resources_mongod_disk_size" {
 variable "resources_mongod_disk_type" {
   description = "Type of the storage of MongoDB hosts"
   type        = string
+  validation {
+    condition     = contains(["network-hdd", "network-ssd", "local-ssd"], var.resources_mongod_disk_type)
+    error_message = "Invalid disk type."
+  }
 }
 
 variable "resources_mongos" {
@@ -99,6 +107,13 @@ variable "resources_mongos" {
     disk_type_id       = string
   })
   default = null
+  validation {
+    condition = var.resources_mongos == null || (
+      contains(["s2.micro", "s2.small", "s2.medium"], var.resources_mongos.resource_preset_id) &&
+      contains(["network-hdd", "network-ssd", "local-ssd"], var.resources_mongos.disk_type_id)
+    )
+    error_message = "Invalid resources for mongos."
+  }
 }
 
 variable "resources_mongocfg" {
@@ -109,6 +124,13 @@ variable "resources_mongocfg" {
     disk_type_id       = string
   })
   default = null
+  validation {
+    condition = var.resources_mongocfg == null || (
+      contains(["s2.micro", "s2.small", "s2.medium"], var.resources_mongocfg.resource_preset_id) &&
+      contains(["network-hdd", "network-ssd", "local-ssd"], var.resources_mongocfg.disk_type_id)
+    )
+    error_message = "Invalid resources for mongocfg."
+  }
 }
 
 variable "mongod_hosts" {
@@ -132,9 +154,11 @@ variable "maintenance_window" {
   validation {
     condition = var.maintenance_window == null || (
       var.maintenance_window.type == "ANYTIME" ||
-      (var.maintenance_window.type == "WEEKLY" && var.maintenance_window.day != null && var.maintenance_window.hour != null)
+      (var.maintenance_window.type == "WEEKLY" &&
+       contains(["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"], var.maintenance_window.day) &&
+       var.maintenance_window.hour >= 1 && var.maintenance_window.hour <= 24)
     )
-    error_message = "For WEEKLY maintenance window, both day and hour must be specified. For ANYTIME, only type should be specified."
+    error_message = "For WEEKLY maintenance window, day must be MON-SUN and hour 1-24. For ANYTIME, only type should be specified."
   }
 }
 
