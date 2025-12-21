@@ -1,11 +1,12 @@
 data "yandex_client_config" "client" {}
 
 resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
-  name        = var.cluster_name
-  description = var.description
-  environment = var.environment
-  folder_id   = data.yandex_client_config.client.folder_id
-  network_id  = var.network_id
+  name                   = var.cluster_name
+  description            = var.description
+  environment            = var.environment
+  folder_id              = data.yandex_client_config.client.folder_id
+  network_id             = var.network_id
+  disk_encryption_key_id = var.disk_encryption_key_id
 
   cluster_config {
     version                       = var.mongodb_version
@@ -38,6 +39,42 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
     backup_retain_period_days = var.backup_retain_period_days
   }
 
+  dynamic "disk_size_autoscaling_mongod" {
+    for_each = var.disk_size_autoscaling_mongod != null ? [var.disk_size_autoscaling_mongod] : []
+    content {
+      disk_size_limit           = disk_size_autoscaling_mongod.value.disk_size_limit
+      emergency_usage_threshold = try(disk_size_autoscaling_mongod.value.emergency_usage_threshold, null)
+      planned_usage_threshold   = try(disk_size_autoscaling_mongod.value.planned_usage_threshold, null)
+    }
+  }
+
+  dynamic "disk_size_autoscaling_mongocfg" {
+    for_each = var.disk_size_autoscaling_mongocfg != null ? [var.disk_size_autoscaling_mongocfg] : []
+    content {
+      disk_size_limit           = disk_size_autoscaling_mongocfg.value.disk_size_limit
+      emergency_usage_threshold = try(disk_size_autoscaling_mongocfg.value.emergency_usage_threshold, null)
+      planned_usage_threshold   = try(disk_size_autoscaling_mongocfg.value.planned_usage_threshold, null)
+    }
+  }
+
+  dynamic "disk_size_autoscaling_mongoinfra" {
+    for_each = var.disk_size_autoscaling_mongoinfra != null ? [var.disk_size_autoscaling_mongoinfra] : []
+    content {
+      disk_size_limit           = disk_size_autoscaling_mongoinfra.value.disk_size_limit
+      emergency_usage_threshold = try(disk_size_autoscaling_mongoinfra.value.emergency_usage_threshold, null)
+      planned_usage_threshold   = try(disk_size_autoscaling_mongoinfra.value.planned_usage_threshold, null)
+    }
+  }
+
+  dynamic "disk_size_autoscaling_mongos" {
+    for_each = var.disk_size_autoscaling_mongos != null ? [var.disk_size_autoscaling_mongos] : []
+    content {
+      disk_size_limit           = disk_size_autoscaling_mongos.value.disk_size_limit
+      emergency_usage_threshold = try(disk_size_autoscaling_mongos.value.emergency_usage_threshold, null)
+      planned_usage_threshold   = try(disk_size_autoscaling_mongos.value.planned_usage_threshold, null)
+    }
+  }
+
   labels = var.labels
 
   resources_mongod {
@@ -64,6 +101,15 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
     }
   }
 
+  dynamic "resources_mongoinfra" {
+    for_each = var.resources_mongoinfra != null ? [var.resources_mongoinfra] : []
+    content {
+      resource_preset_id = resources_mongoinfra.value.resource_preset_id
+      disk_size          = resources_mongoinfra.value.disk_size
+      disk_type_id       = resources_mongoinfra.value.disk_type_id
+    }
+  }
+
   dynamic "host" {
     for_each = var.mongod_hosts
     content {
@@ -85,6 +131,23 @@ resource "yandex_mdb_mongodb_cluster" "mongodb_cluster" {
 
   security_group_ids  = var.security_group_ids
   deletion_protection = var.deletion_protection
+
+  dynamic "restore" {
+    for_each = var.restore != null ? [var.restore] : []
+    content {
+      backup_id = restore.value.backup_id
+      time      = try(restore.value.time, null)
+    }
+  }
+
+  dynamic "timeouts" {
+    for_each = var.timeouts != null ? [var.timeouts] : []
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+      update = timeouts.value.update
+    }
+  }
 }
 
 resource "yandex_mdb_mongodb_database" "mongodb_database" {

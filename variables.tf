@@ -155,8 +155,8 @@ variable "maintenance_window" {
     condition = var.maintenance_window == null || (
       var.maintenance_window.type == "ANYTIME" ||
       (var.maintenance_window.type == "WEEKLY" &&
-       contains(["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"], var.maintenance_window.day) &&
-       var.maintenance_window.hour >= 1 && var.maintenance_window.hour <= 24)
+        contains(["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"], var.maintenance_window.day) &&
+      var.maintenance_window.hour >= 1 && var.maintenance_window.hour <= 24)
     )
     error_message = "For WEEKLY maintenance window, day must be MON-SUN and hour 1-24. For ANYTIME, only type should be specified."
   }
@@ -207,4 +207,79 @@ variable "backup_retain_period_days" {
   description = "Retention period for automatic backups in days"
   type        = number
   default     = null
+}
+
+variable "disk_encryption_key_id" {
+  description = "ID of the KMS key for cluster disk encryption"
+  type        = string
+  default     = null
+}
+
+variable "disk_size_autoscaling_mongod" {
+  description = "Disk size autoscaling settings for mongod hosts"
+  type = object({
+    disk_size_limit           = number
+    emergency_usage_threshold = optional(number)
+    planned_usage_threshold   = optional(number)
+  })
+  default = null
+}
+
+variable "disk_size_autoscaling_mongocfg" {
+  description = "Disk size autoscaling settings for mongocfg hosts"
+  type = object({
+    disk_size_limit           = number
+    emergency_usage_threshold = optional(number)
+    planned_usage_threshold   = optional(number)
+  })
+  default = null
+}
+
+variable "disk_size_autoscaling_mongoinfra" {
+  description = "Disk size autoscaling settings for mongoinfra hosts"
+  type = object({
+    disk_size_limit           = number
+    emergency_usage_threshold = optional(number)
+    planned_usage_threshold   = optional(number)
+  })
+  default = null
+}
+
+variable "disk_size_autoscaling_mongos" {
+  description = "Disk size autoscaling settings for mongos hosts"
+  type = object({
+    disk_size_limit           = number
+    emergency_usage_threshold = optional(number)
+    planned_usage_threshold   = optional(number)
+  })
+  default = null
+}
+
+variable "resources_mongoinfra" {
+  description = "Resources for mongoinfra hosts"
+  type = object({
+    resource_preset_id = string
+    disk_size          = number
+    disk_type_id       = string
+  })
+  default = null
+}
+
+variable "restore" {
+  description = "Restore settings for creating cluster from a backup"
+  type = object({
+    backup_id = string
+    time      = optional(string)
+  })
+  default = null
+}
+
+variable "timeouts" {
+  description = "Timeouts for create/update/delete operations"
+  type = object({
+    create = optional(string)
+    delete = optional(string)
+    update = optional(string)
+  })
+  default = null
 }
