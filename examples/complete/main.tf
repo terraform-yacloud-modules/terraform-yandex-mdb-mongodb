@@ -106,5 +106,49 @@ module "mongodb_cluster" {
     hour = 2
   }
 
+  disk_encryption_key_id = null
+
+  disk_size_autoscaling_mongod = {
+    disk_size_limit           = 100
+    emergency_usage_threshold = 90
+    planned_usage_threshold   = 80
+  }
+
+  disk_size_autoscaling_mongocfg = {
+    disk_size_limit           = 60
+    emergency_usage_threshold = 90
+    planned_usage_threshold   = 80
+  }
+
+  disk_size_autoscaling_mongoinfra = {
+    disk_size_limit           = 40
+    emergency_usage_threshold = 90
+    planned_usage_threshold   = 80
+  }
+
+  disk_size_autoscaling_mongos = {
+    disk_size_limit           = 40
+    emergency_usage_threshold = 90
+    planned_usage_threshold   = 80
+  }
+
+  resources_mongoinfra = {
+    resource_preset_id = "s2.small"
+    disk_size          = 16
+    disk_type_id       = "network-hdd"
+  }
+
+  # Example of creating cluster from a backup (uncomment to use)
+  # restore = {
+  #   backup_id = "example-backup-id"
+  #   time      = "2025-12-01T00:00:00"
+  # }
+
+  timeouts = {
+    create = "30m"
+    update = "30m"
+    delete = "30m"
+  }
+
   depends_on = [module.network]
 }
