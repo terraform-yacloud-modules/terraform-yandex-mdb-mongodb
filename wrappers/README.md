@@ -132,6 +132,133 @@ output "database_ids" {
 }
 ```
 
+## Terragrunt Usage
+
+```hcl
+# terragrunt.hcl
+terraform {
+  source = "tfr:///terraform-yacloud-modules/mdb-mongodb/yandex//wrappers?version=1.14.0"
+}
+
+inputs = {
+  defaults = {
+    environment                = "PRODUCTION"
+    mongodb_version            = "7.0"
+    resources_mongod_preset    = "s2.micro"
+    resources_mongod_disk_type = "network-ssd"
+    resources_mongod_disk_size = 10
+    deletion_protection        = true
+
+    backup_window_start = {
+      hours   = 3
+      minutes = 0
+    }
+  }
+
+  items = {
+    app = {
+      cluster_name  = "mongodb-app"
+      network_id    = dependency.vpc.outputs.network_id
+      subnet_id     = dependency.vpc.outputs.subnet_ids["ru-central1-a"]
+      database_name = "app_db"
+      user_name     = "app_user"
+      user_password = dependency.secrets.outputs.mongodb_password
+      mongod_hosts = [
+        {
+          subnet_id = dependency.vpc.outputs.subnet_ids["ru-central1-a"]
+          zone_id   = "ru-central1-a"
+        }
+      ]
+    }
+
+    logs = {
+      cluster_name               = "mongodb-logs"
+      network_id                 = dependency.vpc.outputs.network_id
+      subnet_id                  = dependency.vpc.outputs.subnet_ids["ru-central1-a"]
+      database_name              = "logs_db"
+      user_name                  = "logs_user"
+      user_password              = dependency.secrets.outputs.mongodb_logs_password
+      resources_mongod_disk_size = 100
+      mongod_hosts = [
+        {
+          subnet_id = dependency.vpc.outputs.subnet_ids["ru-central1-a"]
+          zone_id   = "ru-central1-a"
+        },
+        {
+          subnet_id = dependency.vpc.outputs.subnet_ids["ru-central1-b"]
+          zone_id   = "ru-central1-b"
+        },
+        {
+          subnet_id = dependency.vpc.outputs.subnet_ids["ru-central1-d"]
+          zone_id   = "ru-central1-d"
+        }
+      ]
+    }
+  }
+}
+
+dependency "vpc" {
+  config_path = "../vpc"
+}
+
+dependency "secrets" {
+  config_path = "../secrets"
+}
+```
+
+### Terragrunt with YAML Configuration
+
+```hcl
+# terragrunt.hcl
+terraform {
+  source = "tfr:///terraform-yacloud-modules/mdb-mongodb/yandex//wrappers?version=1.14.0"
+}
+
+locals {
+  config = yamldecode(file("mongodb.yaml"))
+}
+
+inputs = {
+  defaults = local.config.defaults
+  items    = local.config.items
+}
+```
+
+```yaml
+# mongodb.yaml
+defaults:
+  environment: PRODUCTION
+  mongodb_version: "7.0"
+  resources_mongod_preset: s2.micro
+  resources_mongod_disk_type: network-ssd
+  resources_mongod_disk_size: 10
+  deletion_protection: true
+
+items:
+  app:
+    cluster_name: mongodb-app
+    network_id: enp1234567890
+    subnet_id: e9b1234567890
+    database_name: app_db
+    user_name: app_user
+    user_password: ${MONGODB_APP_PASSWORD}
+    mongod_hosts:
+      - subnet_id: e9b1234567890
+        zone_id: ru-central1-a
+
+  cache:
+    cluster_name: mongodb-cache
+    network_id: enp1234567890
+    subnet_id: e9b1234567890
+    database_name: cache_db
+    user_name: cache_user
+    user_password: ${MONGODB_CACHE_PASSWORD}
+    resources_mongod_disk_size: 20
+    mongod_hosts:
+      - subnet_id: e9b1234567890
+        zone_id: ru-central1-a
+```
+
 ## Variables
 
 | Name | Description | Type | Default |
