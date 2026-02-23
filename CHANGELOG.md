@@ -1,3 +1,7 @@
+## v1.18.0 - 2026-02-23
+### Miscellaneous
+- b584864 build(deps): bump kvendingoldo/git-flow-action from 2.2.0 to 2.16.0 ([#63](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/63))
+
 ## v1.17.0
 ## v1.16.0
 ## v1.15.0
