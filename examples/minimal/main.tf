@@ -21,6 +21,9 @@ module "mongodb_cluster" {
   database_name   = "testdb"
   user_name       = "john"
   user_password   = "password"
+  user_permissions = [
+    { database_name = "testdb", roles = ["readWrite"] },
+  ]
 
   resources_mongod_preset    = "s2.small"
   resources_mongod_disk_size = 16

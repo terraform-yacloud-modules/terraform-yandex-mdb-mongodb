@@ -32,10 +32,10 @@ module "mongodb_cluster" {
   database_name   = "testdb"
   user_name       = "john"
   user_password   = "password"
-  # Optional: multiple permissions (overrides database_name + user_roles when set)
+  # Multiple permissions (overrides database_name + user_roles when set).
+  # Note: Yandex API does not allow role "read" on database "admin".
   user_permissions = [
     { database_name = "testdb", roles = ["readWrite"] },
-    { database_name = "admin", roles = ["read"] }
   ]
   resources_mongod_preset    = "s2.small"
   resources_mongod_disk_size = 16
