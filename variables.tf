@@ -4,7 +4,7 @@ variable "subnet_id" {
 }
 
 variable "network_id" {
-  description = "ID of the network, to which the Redis cluster belongs"
+  description = "ID of the network, to which the MongoDB cluster belongs"
   type        = string
 }
 
@@ -71,9 +71,18 @@ variable "user_password" {
 }
 
 variable "user_roles" {
-  description = "Roles of the user"
-  type        = list(any)
+  description = "Roles of the user in the default database (used when user_permissions is not set)"
+  type        = list(string)
   default     = ["readWrite"]
+}
+
+variable "user_permissions" {
+  description = "Set of permissions granted to the user (database_name + roles per database). If set, overrides database_name and user_roles with a single permission."
+  type = list(object({
+    database_name = string
+    roles         = list(string)
+  }))
+  default = null
 }
 
 variable "resources_mongod_preset" {
@@ -152,8 +161,8 @@ variable "maintenance_window" {
   })
   default = null
   validation {
-    condition = var.maintenance_window == null || (
-      var.maintenance_window.type == "ANYTIME" ||
+    condition = var.maintenance_window == null ? true : (
+      (var.maintenance_window.type == "ANYTIME") ||
       (var.maintenance_window.type == "WEEKLY" &&
         contains(["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"], var.maintenance_window.day) &&
       var.maintenance_window.hour >= 1 && var.maintenance_window.hour <= 24)

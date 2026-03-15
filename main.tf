@@ -159,11 +159,14 @@ resource "yandex_mdb_mongodb_user" "mongodb_user" {
   cluster_id = yandex_mdb_mongodb_cluster.mongodb_cluster.id
   name       = var.user_name
   password   = var.user_password
-  permission {
-    database_name = var.database_name
-    roles         = var.user_roles
+
+  dynamic "permission" {
+    for_each = length(coalesce(var.user_permissions, [])) > 0 ? var.user_permissions : [{ database_name = var.database_name, roles = var.user_roles }]
+    content {
+      database_name = permission.value.database_name
+      roles         = permission.value.roles
+    }
   }
 
-  # Добавляем зависимость от ресурса базы данных
   depends_on = [yandex_mdb_mongodb_database.mongodb_database]
 }

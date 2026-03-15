@@ -59,7 +59,7 @@ No modules.
 | <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | Maintenance window settings for the MongoDB cluster | <pre>object({<br/>    type = optional(string)<br/>    day  = optional(string)<br/>    hour = optional(number)<br/>  })</pre> | `null` | no |
 | <a name="input_mongod_hosts"></a> [mongod\_hosts](#input\_mongod\_hosts) | List of hosts in MongoDB cluster. | <pre>list(object({<br/>    assign_public_ip = optional(bool, false)<br/>    zone_id          = optional(string, "ru-central1-a")<br/>    subnet_id        = string<br/>    type             = optional(string, "MONGOD")<br/>  }))</pre> | n/a | yes |
 | <a name="input_mongodb_version"></a> [mongodb\_version](#input\_mongodb\_version) | Version of the MongoDB server | `string` | n/a | yes |
-| <a name="input_network_id"></a> [network\_id](#input\_network\_id) | ID of the network, to which the Redis cluster belongs | `string` | n/a | yes |
+| <a name="input_network_id"></a> [network\_id](#input\_network\_id) | ID of the network, to which the MongoDB cluster belongs | `string` | n/a | yes |
 | <a name="input_performance_diagnostics"></a> [performance\_diagnostics](#input\_performance\_diagnostics) | Performance diagnostics to the MongoDB cluster | <pre>object({<br/>    enabled = optional(bool)<br/>  })</pre> | `null` | no |
 | <a name="input_resources_mongocfg"></a> [resources\_mongocfg](#input\_resources\_mongocfg) | Resources for mongocfg hosts | <pre>object({<br/>    resource_preset_id = string<br/>    disk_size          = number<br/>    disk_type_id       = string<br/>  })</pre> | `null` | no |
 | <a name="input_resources_mongod_disk_size"></a> [resources\_mongod\_disk\_size](#input\_resources\_mongod\_disk\_size) | Volume of the storage available to a MongoDB host, in gigabytes | `number` | n/a | yes |
@@ -73,7 +73,8 @@ No modules.
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Timeouts for create/update/delete operations | <pre>object({<br/>    create = optional(string)<br/>    delete = optional(string)<br/>    update = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_user_name"></a> [user\_name](#input\_user\_name) | Name of the user | `string` | n/a | yes |
 | <a name="input_user_password"></a> [user\_password](#input\_user\_password) | Password of the user | `string` | n/a | yes |
-| <a name="input_user_roles"></a> [user\_roles](#input\_user\_roles) | Roles of the user | `list(any)` | <pre>[<br/>  "readWrite"<br/>]</pre> | no |
+| <a name="input_user_permissions"></a> [user\_permissions](#input\_user\_permissions) | Set of permissions granted to the user (database\_name + roles per database). If set, overrides database\_name and user\_roles with a single permission. | <pre>list(object({<br/>    database_name = string<br/>    roles         = list(string)<br/>  }))</pre> | `null` | no |
+| <a name="input_user_roles"></a> [user\_roles](#input\_user\_roles) | Roles of the user in the default database (used when user\_permissions is not set) | `list(string)` | <pre>[<br/>  "readWrite"<br/>]</pre> | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | Zone for allocating address | `string` | `"ru-central1-a"` | no |
 
 ## Outputs
