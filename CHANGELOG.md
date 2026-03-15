@@ -1,3 +1,7 @@
+## v1.20.0 - 2026-03-15
+### Miscellaneous
+- 17e4d4f Add user_permissions, fix null handling and descriptions ([#65](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/65))
+
 ## v1.19.0 - 2026-03-02
 ### Miscellaneous
 - 43cd2c2 build(deps): bump hashicorp/setup-terraform from 3 to 4 ([#64](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/64))
