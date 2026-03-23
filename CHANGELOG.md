@@ -1,3 +1,7 @@
+## v1.21.0 - 2026-03-23
+### Miscellaneous
+- e963936 build(deps): bump actions/cache from 5.0.3 to 5.0.4 ([#66](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/66))
+
 ## v1.20.0 - 2026-03-15
 ### Miscellaneous
 - 17e4d4f Add user_permissions, fix null handling and descriptions ([#65](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/65))
