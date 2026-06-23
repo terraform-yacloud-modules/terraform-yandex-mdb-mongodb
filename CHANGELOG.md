@@ -1,3 +1,7 @@
+## v1.23.0 - 2026-06-23
+### Miscellaneous
+- 819d77b build(deps): bump actions/checkout from 6 to 7 ([#68](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/68))
+
 ## v1.22.0 - 2026-04-21
 ### Miscellaneous
 - e91b421 build(deps): bump actions/cache from 5.0.4 to 5.0.5 ([#67](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/67))
