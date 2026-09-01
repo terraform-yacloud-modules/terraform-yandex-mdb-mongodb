@@ -1,10 +1,13 @@
 data "yandex_client_config" "client" {}
 
+provider "yandex" {
+}
+
 module "network" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-vpc.git?ref=v1.0.0"
 
   blank_name      = "mongodb-vpc"
-  folder_id       = data.yandex_client_config.client.folder_id
+  folder_id       = coalesce(var.folder_id, data.yandex_client_config.client.folder_id)
   azs             = ["ru-central1-a", "ru-central1-b"]
   private_subnets = [["10.5.0.0/24"], ["10.6.0.0/24"]]
 }
