@@ -1,3 +1,7 @@
+## v1.31.0 - 2026-09-07
+### Miscellaneous
+- 2751672 build(deps): bump bridgecrewio/checkov-action ([#76](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/76))
+
 ## v1.30.0 - 2026-09-01
 ### Bug Fixes
 - f4cc6be fix: передача folder_id в примере с приоритетом tfvars над YC_FOLDER_ID- [#77](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/77)
