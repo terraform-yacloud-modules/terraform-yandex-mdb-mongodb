@@ -1,3 +1,7 @@
+## v1.33.0 - 2026-09-21
+### Miscellaneous
+- 02c0460 build(deps): bump bridgecrewio/checkov-action ([#78](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/78))
+
 ## v1.32.0 - 2026-09-14
 ### Miscellaneous
 - c89f594 build(deps): bump bridgecrewio/checkov-action ([#77](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/77))
