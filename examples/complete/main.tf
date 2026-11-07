@@ -13,7 +13,7 @@ module "network" {
     repo = "terraform-yacloud-modules/terraform-yandex-vpc"
   }
 
-  azs = ["ru-central1-a", "ru-central1-b"]
+  azs = ["ru-central1-a", "ru-central1-d"]
 
   private_subnets = [["10.5.0.0/24"], ["10.6.0.0/24"]]
 
@@ -65,7 +65,7 @@ module "mongodb_cluster" {
       type      = "MONGOD"
     },
     {
-      zone_id   = "ru-central1-b"
+      zone_id   = "ru-central1-d"
       subnet_id = module.network.private_subnets_ids[1]
       type      = "MONGOD"
     },
@@ -75,7 +75,7 @@ module "mongodb_cluster" {
       type      = "MONGOS"
     },
     {
-      zone_id   = "ru-central1-b"
+      zone_id   = "ru-central1-d"
       subnet_id = module.network.private_subnets_ids[1]
       type      = "MONGOS"
     },
@@ -85,7 +85,7 @@ module "mongodb_cluster" {
       type      = "MONGOCFG"
     },
     {
-      zone_id   = "ru-central1-b"
+      zone_id   = "ru-central1-d"
       subnet_id = module.network.private_subnets_ids[1]
       type      = "MONGOCFG"
     },
