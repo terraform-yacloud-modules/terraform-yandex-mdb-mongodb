@@ -1,3 +1,7 @@
+## v1.39.0 - 2026-11-10
+### Bug Fixes
+- cc51314 fix(examples): replace unavailable ru-central1-b with ru-central1-d ([#84](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/84))
+
 ## v1.38.0 - 2026-11-04
 ### Miscellaneous
 - 4450aad build(deps): bump bridgecrewio/checkov-action ([#83](https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-mongodb/pull/83))
